@@ -269,7 +269,7 @@ function snth_pagination($args = array()) {
     $big = 999999999;
 
     $defaults = array(
-        'pagination_class' => 'pagination justify-content-center'
+        'pagination_class' => 'mx-auto'
     );
 
     $args = wp_parse_args( $args, $defaults );
@@ -288,12 +288,12 @@ function snth_pagination($args = array()) {
 
     if (!empty($paginate_links)) {
         foreach ($paginate_links as $key => $link) {
-            $new_link = str_replace('<a class="prev page-numbers"', '<li class="page-item"><a class="page-link"', $link);
-            $new_link = str_replace('<a class="next page-numbers"', '<li class="page-item"><a class="page-link"', $new_link);
-            $new_link = str_replace('<a class="page-numbers"', '<li class="page-item"><a class="page-link"', $new_link);
-            $new_link = str_replace('<a class=\'page-numbers\'', '<li class="page-item"><a class="page-link"', $new_link);
-            $new_link = str_replace('<span class="page-numbers dots"', '<li class="page-item disabled"><span class="page-link"', $new_link);
-            $new_link = str_replace('<span aria-current=\'page\' class=\'page-numbers current\'', '<li class="page-item active"><span class="page-link"', $new_link);
+            $new_link = str_replace('<a class="prev page-numbers"', '<li class="page-item"><a', $link);
+            $new_link = str_replace('<a class="next page-numbers"', '<li class="page-item"><a', $new_link);
+            $new_link = str_replace('<a class="page-numbers"', '<li class="page-item"><a', $new_link);
+            $new_link = str_replace('<a class=\'page-numbers\'', '<li class="page-item"><a', $new_link);
+            $new_link = str_replace('<span class="page-numbers dots"', '<li class="page-item disabled"><a', $new_link);
+            $new_link = str_replace('<span aria-current=\'page\' class=\'page-numbers current\'', '<li class="page-item active"><a', $new_link);
             $new_link = str_replace('</a>', '</a></li>', $new_link);
             $new_link = str_replace('</span>', '</span></li>', $new_link);
 
@@ -302,7 +302,7 @@ function snth_pagination($args = array()) {
     }
 
     if ( $paginate_links ) {
-        echo '<nav aria-label="Page navigation" class="page-navigation">';
+        echo '<nav aria-label="Page navigation" class="pagination text-small text-uppercase text-extra-dark-gray">';
         echo '<ul class="'.$args['pagination_class'].'">';
         foreach ($paginate_links as $link) {
             echo $link;

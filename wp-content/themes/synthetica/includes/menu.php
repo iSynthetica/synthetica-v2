@@ -25,7 +25,7 @@ function snth_main_nav()
     wp_nav_menu(array(
         'container' => false,
         'menu_class' => 'nav navbar-nav no-margin alt-font text-normal',
-        'items_wrap' => '<ul>%3$s</ul>',
+        'items_wrap' => '<ul id="accordion" class="nav navbar-nav no-margin alt-font text-normal" data-in="fadeIn" data-out="fadeOut">%3$s</ul>',
         'theme_location' => 'main-nav',
         'depth' => 3,
         'fallback_cb' => false,
@@ -55,7 +55,7 @@ class Main_Nav_Walker extends Walker_Nav_Menu {
         $classes = array( 'dropdown-menu' );
 
         $class_names = join( ' ', apply_filters( 'nav_menu_submenu_css_class', $classes, $args, $depth ) );
-        $class_names = '';
+        // $class_names = '';
         $class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
 
         $output .= "{$n}{$indent}<ul$class_names>{$n}";
@@ -96,16 +96,16 @@ class Main_Nav_Walker extends Walker_Nav_Menu {
         $local_link_class = '';
 
         if (in_array('menu-item-has-children', $classes)) {
-//            if (0 === $depth) {
-//                $class_names = ' class="dropdown simple-dropdown"';
-//                $local_after .= ' <i class="fas fa-angle-down dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>';
-//            }
-//
-//            if (1 === $depth) {
-//                $class_names = ' class="dropdown"';
-//                $local_link_after .= ' <i class="fas fa-angle-right"></i>';
-//                $local_link_class .= 'dropdown-toggle';
-//            }
+            if (0 === $depth) {
+                $class_names = ' class="dropdown simple-dropdown"';
+                $local_after .= ' <i class="fas fa-angle-down dropdown-toggle" data-toggle="dropdown" aria-hidden="true"></i>';
+            }
+
+            if (1 === $depth) {
+                $class_names = ' class="dropdown"';
+                $local_link_after .= ' <i class="fas fa-angle-right"></i>';
+                $local_link_class .= 'dropdown-toggle';
+            }
         }
 
         $output .= $indent . '<li' . $id . $class_names .'>';
@@ -131,9 +131,9 @@ class Main_Nav_Walker extends Walker_Nav_Menu {
         $title = apply_filters( 'nav_menu_item_title', $title, $item, $args, $depth );
 
         $item_output = $local_before . $args->before;
-        $item_output .= '<a'. $attributes .'><div>';
+        $item_output .= '<a'. $attributes .'>';
         $item_output .= $args->link_before . $title . $local_link_after . $args->link_after;
-        $item_output .= '</div></a>';
+        $item_output .= '</a>';
         $item_output .= $args->after . $local_after;
 
         $output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
