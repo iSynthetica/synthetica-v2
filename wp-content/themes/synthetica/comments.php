@@ -54,19 +54,19 @@ if ( post_password_required() ) {
             </div>
         </div>
 
-		<ol class="blog-comment commentlist clearfix">
+		<ul class="blog-comment commentlist clearfix">
 			<?php
 				wp_list_comments(
 					array(
 						'avatar_size' => 100,
-						'style'       => 'ol',
+						'style'       => 'ul',
 						'short_ping'  => true,
-						'reply_text'  => __( 'Reply', 'primex' ),
-                        // 'walker' => new Snth_Walker_Comment,
+						'reply_text'  => __( 'Reply', 'synthetica' ),
+                        'walker' => new Snth_Walker_Comment,
 					)
 				);
 			?>
-		</ol>
+		</ul>
 
 		<?php
 		the_comments_pagination(
@@ -85,7 +85,7 @@ if ( post_password_required() ) {
 		<?php
 	endif;
 
-    comment_form();
+    snth_comment_form();
 	?>
 
 </div><!-- #comments -->

@@ -35,11 +35,11 @@ class Snth_Walker_Comment extends Walker_Comment {
             case 'div':
                 break;
             case 'ol':
-                $output .= '<ol class="children">' . "\n";
+                $output .= '<ol class="child-comment">' . "\n";
                 break;
             case 'ul':
             default:
-                $output .= '<ul class="children">' . "\n";
+                $output .= '<ul class="child-comment">' . "\n";
                 break;
         }
     }
@@ -339,38 +339,43 @@ class Snth_Walker_Comment extends Walker_Comment {
 
         ?>
         <<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class( $this->has_children ? 'parent' : '', $comment ); ?>>
-        <article id="div-comment-<?php comment_ID(); ?>" class="comment-wrap comment-body clearfix">
-            <div class="comment-meta">
-                <div class="comment-author vcard">
-                    <span class="comment-avatar clearfix">
-                        <?php
-                        if ( 0 != $args['avatar_size'] ) {
-                            echo get_avatar( $comment, 60 );}
-                        ?>
-                    </span>
-                </div><!-- .comment-author -->
-            </div><!-- .comment-meta -->
+        <article id="div-comment-<?php comment_ID(); ?>" class="comment-wrap comment-body d-block d-md-flex width-100 width-100">
+            <div class="width-110px sm-width-50px text-center sm-margin-10px-bottom comment-meta">
+                <?php
+                if ( 0 != $args['avatar_size'] ) {
+                    echo get_avatar( $comment, 85, '', '', array('class' => 'rounded-circle width-85 sm-width-100') );}
+                ?>
+            </div>
 
-            <div class="comment-content clearfix">
-                <div class="comment-author">
-                    <?php
-                    /* translators: %s: comment author link */
-                    echo sprintf( '%s', get_comment_author_link( $comment ) );
-                    ?>
-                    <span>
-                        <a href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
-                            <time datetime="<?php comment_time( 'c' ); ?>">
-                                <?php
-                                /* translators: 1: comment date, 2: comment time */
-                                printf( __( '%1$s at %2$s' ), get_comment_date( '', $comment ), get_comment_time() );
-                                ?>
-                            </time>
-                        </a>
-                    </span>
-                </div>
+            <div class="comment-content width-100 padding-40px-left last-paragraph-no-margin sm-no-padding-left">
+                <?php
+                /* translators: %s: comment author link */
+                echo sprintf( '%s', snth_get_comment_author_link( $comment ) );
 
-                <div class="comment-metadata">
-                    <?php edit_comment_link( __( 'Edit' ), '<span class="edit-link">', '</span>' ); ?>
+                comment_reply_link(
+                    array_merge(
+                        $args,
+                        array(
+                            'add_below' => 'div-comment',
+                            'reply_text' => __('Reply', 'synthetica'),
+                            'depth'     => $depth,
+                            'max_depth' => $args['max_depth'],
+                            'before'    => '<div class="comment-reply inner-link btn-reply text-uppercase alt-font text-extra-dark-gray">',
+                            'after'     => '</div>',
+                        )
+                    )
+                );
+                ?>
+
+                <div class="text-small text-medium-gray text-uppercase margin-10px-bottom">
+                    <a href="<?php echo esc_url( get_comment_link( $comment, $args ) ); ?>">
+                        <time datetime="<?php comment_time( 'c' ); ?>">
+                            <?php
+                            /* translators: 1: comment date, 2: comment time */
+                            printf( __( '%1$s at %2$s' ), get_comment_date( '', $comment ), get_comment_time() );
+                            ?>
+                        </time>
+                    </a>
                 </div>
 
                 <?php if ( '0' == $comment->comment_approved ) : ?>
@@ -379,25 +384,363 @@ class Snth_Walker_Comment extends Walker_Comment {
 
                 <?php comment_text(); ?>
 
-                <?php
-                comment_reply_link(
-                    array_merge(
-                        $args,
-                        array(
-                            'add_below' => 'div-comment',
-                            'reply_text' => '<i class="fas fa-reply"></i>',
-                            'depth'     => $depth,
-                            'max_depth' => $args['max_depth'],
-                            'before'    => '<div class="comment-reply">',
-                            'after'     => '</div>',
-                        )
-                    )
-                );
-                ?>
-            </div><!-- .comment-content -->
-
-            <div class="clear"></div>
+                <div class="comment-metadata">
+                    <?php edit_comment_link( __( 'Edit' ), '<span class="edit-link">', '</span>' ); ?>
+                </div>
+            </div>
         </article><!-- .comment-body -->
         <?php
     }
+}
+
+function snth_get_comment_author_link( $comment_ID = 0 ) {
+    $comment = get_comment( $comment_ID );
+    $url     = get_comment_author_url( $comment );
+    $author  = get_comment_author( $comment );
+
+    if ( empty( $url ) || 'http://' == $url ) {
+        $return = "<span class='text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small'>$author</span>";
+    } else {
+        $return = "<a href='$url' rel='external nofollow' class='text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small'>$author</a>";
+    }
+
+    /**
+     * Filters the comment author's link for display.
+     *
+     * @since 1.5.0
+     * @since 4.1.0 The `$author` and `$comment_ID` parameters were added.
+     *
+     * @param string $return     The HTML-formatted comment author link.
+     *                           Empty for an invalid URL.
+     * @param string $author     The comment author's username.
+     * @param int    $comment_ID The comment ID.
+     */
+    return apply_filters( 'get_comment_author_link', $return, $author, $comment->comment_ID );
+}
+
+
+function snth_comment_form( $args = array(), $post_id = null ) {
+    if ( null === $post_id ) {
+        $post_id = get_the_ID();
+    }
+
+    // Exit the function when comments for the post are closed.
+    if ( ! comments_open( $post_id ) ) {
+        /**
+         * Fires after the comment form if comments are closed.
+         *
+         * @since 3.0.0
+         */
+        do_action( 'comment_form_comments_closed' );
+
+        return;
+    }
+
+    $commenter     = wp_get_current_commenter();
+    $user          = wp_get_current_user();
+    $user_identity = $user->exists() ? $user->display_name : '';
+
+    $args = wp_parse_args( $args );
+    if ( ! isset( $args['format'] ) ) {
+        $args['format'] = current_theme_supports( 'html5', 'comment-form' ) ? 'html5' : 'xhtml';
+    }
+
+    $req      = get_option( 'require_name_email' );
+    $html_req = ( $req ? " required='required'" : '' );
+    $html5    = 'html5' === $args['format'];
+    $fields   = array(
+        'author' => '<p class="comment-form-author">' . '<label for="author">' . __( 'Name' ) . ( $req ? ' <span class="required">*</span>' : '' ) . '</label> ' .
+                    '<input id="author" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30" maxlength="245"' . $html_req . ' /></p>',
+        'email'  => '<p class="comment-form-email"><label for="email">' . __( 'Email' ) . ( $req ? ' <span class="required">*</span>' : '' ) . '</label> ' .
+                    '<input id="email" name="email" ' . ( $html5 ? 'type="email"' : 'type="text"' ) . ' value="' . esc_attr( $commenter['comment_author_email'] ) . '" size="30" maxlength="100" aria-describedby="email-notes"' . $html_req . ' /></p>',
+        'url'    => '<p class="comment-form-url"><label for="url">' . __( 'Website' ) . '</label> ' .
+                    '<input id="url" name="url" ' . ( $html5 ? 'type="url"' : 'type="text"' ) . ' value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" maxlength="200" /></p>',
+    );
+
+    if ( has_action( 'set_comment_cookies', 'wp_set_comment_cookies' ) && get_option( 'show_comments_cookies_opt_in' ) ) {
+        $consent           = empty( $commenter['comment_author_email'] ) ? '' : ' checked="checked"';
+        $fields['cookies'] = '<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"' . $consent . ' />' .
+                             '<label for="wp-comment-cookies-consent">' . __( 'Save my name, email, and website in this browser for the next time I comment.' ) . '</label></p>';
+
+        // Ensure that the passed fields include cookies consent.
+        if ( isset( $args['fields'] ) && ! isset( $args['fields']['cookies'] ) ) {
+            $args['fields']['cookies'] = $fields['cookies'];
+        }
+    }
+
+    $required_text = sprintf( ' ' . __( 'Required fields are marked %s' ), '<span class="required">*</span>' );
+
+    /**
+     * Filters the default comment form fields.
+     *
+     * @since 3.0.0
+     *
+     * @param string[] $fields Array of the default comment fields.
+     */
+    $fields   = apply_filters( 'comment_form_default_fields', $fields );
+    $defaults = array(
+        'fields'               => $fields,
+        'comment_field'        => '<p class="comment-form-comment"><label for="comment">' . _x( 'Comment', 'noun' ) . '</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p>',
+        /** This filter is documented in wp-includes/link-template.php */
+        'must_log_in'          => '<p class="must-log-in">' . sprintf(
+            /* translators: %s: login URL */
+                __( 'You must be <a href="%s">logged in</a> to post a comment.' ),
+                wp_login_url( apply_filters( 'the_permalink', get_permalink( $post_id ), $post_id ) )
+            ) . '</p>',
+        /** This filter is documented in wp-includes/link-template.php */
+        'logged_in_as'         => '<p class="logged-in-as">' . sprintf(
+            /* translators: 1: edit user link, 2: accessibility text, 3: user name, 4: logout URL */
+                __( '<a href="%1$s" aria-label="%2$s">Logged in as %3$s</a>. <a href="%4$s">Log out?</a>' ),
+                get_edit_user_link(),
+                /* translators: %s: user name */
+                esc_attr( sprintf( __( 'Logged in as %s. Edit your profile.' ), $user_identity ) ),
+                $user_identity,
+                wp_logout_url( apply_filters( 'the_permalink', get_permalink( $post_id ), $post_id ) )
+            ) . '</p>',
+        'comment_notes_before' => '<p class="comment-notes"><span id="email-notes">' . __( 'Your email address will not be published.' ) . '</span>' . ( $req ? $required_text : '' ) . '</p>',
+        'comment_notes_after'  => '',
+        'action'               => site_url( '/wp-comments-post.php' ),
+        'id_form'              => 'commentform',
+        'id_submit'            => 'submit',
+        'class_form'           => 'comment-form',
+        'class_submit'         => 'submit',
+        'name_submit'          => 'submit',
+        'title_reply'          => __( 'Leave a Reply' ),
+        'title_reply_to'       => __( 'Leave a Reply to %s' ),
+        'title_reply_before'   => '<h3 id="reply-title" class="comment-reply-title">',
+        'title_reply_after'    => '</h3>',
+        'cancel_reply_before'  => ' <small>',
+        'cancel_reply_after'   => '</small>',
+        'cancel_reply_link'    => __( 'Cancel reply' ),
+        'label_submit'         => __( 'Post Comment' ),
+        'submit_button'        => '<input name="%1$s" type="submit" id="%2$s" class="%3$s" value="%4$s" />',
+        'submit_field'         => '<p class="form-submit">%1$s %2$s</p>',
+        'format'               => 'xhtml',
+    );
+
+    /**
+     * Filters the comment form default arguments.
+     *
+     * Use {@see 'comment_form_default_fields'} to filter the comment fields.
+     *
+     * @since 3.0.0
+     *
+     * @param array $defaults The default comment form arguments.
+     */
+    $args = wp_parse_args( $args, apply_filters( 'comment_form_defaults', $defaults ) );
+
+    // Ensure that the filtered args contain all required default values.
+    $args = array_merge( $defaults, $args );
+
+    /**
+     * Fires before the comment form.
+     *
+     * @since 3.0.0
+     */
+    do_action( 'comment_form_before' );
+    ?>
+    <div id="respond" class="comment-respond">
+        <div class="row">
+        <div class="col-12 mx-auto text-center margin-80px-tb md-margin-50px-tb sm-margin-30px-tb">
+            <div class="position-relative overflow-hidden width-100">
+
+                    <?php
+                    echo $args['title_reply_before'];
+                    comment_form_title( $args['title_reply'], $args['title_reply_to'] );
+                    echo $args['cancel_reply_before'];
+                    ?>
+                </span>
+            </div>
+        </div>
+        <?php
+
+        cancel_comment_reply_link( $args['cancel_reply_link'] );
+
+        echo $args['cancel_reply_after'];
+
+        echo $args['title_reply_after'];
+
+        if ( get_option( 'comment_registration' ) && ! is_user_logged_in() ) :
+            echo $args['must_log_in'];
+            /**
+             * Fires after the HTML-formatted 'must log in after' message in the comment form.
+             *
+             * @since 3.0.0
+             */
+            do_action( 'comment_form_must_log_in_after' );
+        else :
+            ?>
+            <div class="col-12 mx-auto text-center margin-80px-tb md-margin-50px-tb sm-margin-30px-tb">
+                <form action="<?php echo esc_url( $args['action'] ); ?>" method="post" id="<?php echo esc_attr( $args['id_form'] ); ?>" class="<?php echo esc_attr( $args['class_form'] ); ?>"<?php echo $html5 ? ' novalidate' : ''; ?>>
+                    <div class="row">
+                        <?php
+                        /**
+                         * Fires at the top of the comment form, inside the form tag.
+                         *
+                         * @since 3.0.0
+                         */
+                        do_action( 'comment_form_top' );
+
+                        if ( is_user_logged_in() ) :
+                            /**
+                             * Filters the 'logged in' message for the comment form for display.
+                             *
+                             * @since 3.0.0
+                             *
+                             * @param string $args_logged_in The logged-in-as HTML-formatted message.
+                             * @param array  $commenter      An array containing the comment author's
+                             *                               username, email, and URL.
+                             * @param string $user_identity  If the commenter is a registered user,
+                             *                               the display name, blank otherwise.
+                             */
+                            echo apply_filters( 'comment_form_logged_in', $args['logged_in_as'], $commenter, $user_identity );
+
+                            /**
+                             * Fires after the is_user_logged_in() check in the comment form.
+                             *
+                             * @since 3.0.0
+                             *
+                             * @param array  $commenter     An array containing the comment author's
+                             *                              username, email, and URL.
+                             * @param string $user_identity If the commenter is a registered user,
+                             *                              the display name, blank otherwise.
+                             */
+                            do_action( 'comment_form_logged_in_after', $commenter, $user_identity );
+
+                        else :
+
+                            echo $args['comment_notes_before'];
+
+                        endif;
+
+                        // Prepare an array of all fields, including the textarea
+                        $comment_fields = array( 'comment' => $args['comment_field'] ) + (array) $args['fields'];
+
+                        /**
+                         * Filters the comment form fields, including the textarea.
+                         *
+                         * @since 4.4.0
+                         *
+                         * @param array $comment_fields The comment fields.
+                         */
+                        $comment_fields = apply_filters( 'comment_form_fields', $comment_fields );
+
+                        // Get an array of field names, excluding the textarea
+                        $comment_field_keys = array_diff( array_keys( $comment_fields ), array( 'comment' ) );
+
+                        // Get the first and the last field name, excluding the textarea
+                        $first_field = reset( $comment_field_keys );
+                        $last_field  = end( $comment_field_keys );
+
+                        foreach ( $comment_fields as $name => $field ) {
+
+                            if ( 'comment' === $name ) {
+
+                                /**
+                                 * Filters the content of the comment textarea field for display.
+                                 *
+                                 * @since 3.0.0
+                                 *
+                                 * @param string $args_comment_field The content of the comment textarea field.
+                                 */
+                                echo apply_filters( 'comment_form_field_comment', $field );
+
+                                echo $args['comment_notes_after'];
+
+                            } elseif ( ! is_user_logged_in() ) {
+
+                                if ( $first_field === $name ) {
+                                    /**
+                                     * Fires before the comment fields in the comment form, excluding the textarea.
+                                     *
+                                     * @since 3.0.0
+                                     */
+                                    do_action( 'comment_form_before_fields' );
+                                }
+
+                                /**
+                                 * Filters a comment form field for display.
+                                 *
+                                 * The dynamic portion of the filter hook, `$name`, refers to the name
+                                 * of the comment form field. Such as 'author', 'email', or 'url'.
+                                 *
+                                 * @since 3.0.0
+                                 *
+                                 * @param string $field The HTML-formatted output of the comment form field.
+                                 */
+                                echo apply_filters( "comment_form_field_{$name}", $field ) . "\n";
+
+                                if ( $last_field === $name ) {
+                                    /**
+                                     * Fires after the comment fields in the comment form, excluding the textarea.
+                                     *
+                                     * @since 3.0.0
+                                     */
+                                    do_action( 'comment_form_after_fields' );
+                                }
+                            }
+                        }
+
+                        $submit_button = sprintf(
+                            $args['submit_button'],
+                            esc_attr( $args['name_submit'] ),
+                            esc_attr( $args['id_submit'] ),
+                            esc_attr( $args['class_submit'] ),
+                            esc_attr( $args['label_submit'] )
+                        );
+
+                        /**
+                         * Filters the submit button for the comment form to display.
+                         *
+                         * @since 4.2.0
+                         *
+                         * @param string $submit_button HTML markup for the submit button.
+                         * @param array  $args          Arguments passed to comment_form().
+                         */
+                        $submit_button = apply_filters( 'comment_form_submit_button', $submit_button, $args );
+
+                        $submit_field = sprintf(
+                            $args['submit_field'],
+                            $submit_button,
+                            get_comment_id_fields( $post_id )
+                        );
+
+                        /**
+                         * Filters the submit field for the comment form to display.
+                         *
+                         * The submit field includes the submit button, hidden fields for the
+                         * comment form, and any wrapper markup.
+                         *
+                         * @since 4.2.0
+                         *
+                         * @param string $submit_field HTML markup for the submit field.
+                         * @param array  $args         Arguments passed to comment_form().
+                         */
+                        echo apply_filters( 'comment_form_submit_field', $submit_field, $args );
+
+                        /**
+                         * Fires at the bottom of the comment form, inside the closing </form> tag.
+                         *
+                         * @since 1.5.0
+                         *
+                         * @param int $post_id The post ID.
+                         */
+                        do_action( 'comment_form', $post_id );
+                        ?>
+
+                    </div>
+                </form>
+            </div>
+        <?php endif; ?>
+
+        </div>
+    </div><!-- #respond -->
+    <?php
+
+    /**
+     * Fires after the comment form.
+     *
+     * @since 3.0.0
+     */
+    do_action( 'comment_form_after' );
 }

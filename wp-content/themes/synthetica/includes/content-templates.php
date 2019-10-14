@@ -536,59 +536,26 @@ function snth_comment_form_defaults($defaults) {
     $html5    = false;
 
     $fields   = array(
-        'author' => '<div class="comment-form-author col_one_third">' . '<label for="author">' . __( 'Name' ) . ( $req ? ' <span class="required">*</span>' : '' ) . '</label> ' .
-            '<input id="author" class="sm-form-control" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30" maxlength="245"' . $html_req . ' /></div>',
-        'email'  => '<div class="comment-form-email col_one_third"><label for="email">' . __( 'Email' ) . ( $req ? ' <span class="required">*</span>' : '' ) . '</label> ' .
-            '<input id="email" class="sm-form-control" name="email" ' . ( $html5 ? 'type="email"' : 'type="text"' ) . ' value="' . esc_attr( $commenter['comment_author_email'] ) . '" size="30" maxlength="100" aria-describedby="email-notes"' . $html_req . ' /></div>',
-        'url'    => '<div class="comment-form-url col_one_third  col_last"><label for="url">' . __( 'Website' ) . '</label> ' .
-            '<input id="url" class="sm-form-control" name="url" ' . ( $html5 ? 'type="url"' : 'type="text"' ) . ' value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" maxlength="200" /></div>',
+        'author' => '<div class="comment-form-author col-12 col-lg-4">' .
+            '<input id="author" placeholder="' . __( 'Name' ) . ( $req ? ' *' : '' ) . '" class="medium-input" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30" maxlength="245"' . $html_req . ' /></div>',
+        'email'  => '<div class="comment-form-email col-12 col-lg-4"> ' .
+            '<input id="email" placeholder="' . __( 'Email' ) . ( $req ? ' *' : '' ) . '" class="medium-input" name="email" ' . ( $html5 ? 'type="email"' : 'type="text"' ) . ' value="' . esc_attr( $commenter['comment_author_email'] ) . '" size="30" maxlength="100" aria-describedby="email-notes"' . $html_req . ' /></div>',
+        'url'    => '<div class="comment-form-url col-12 col-lg-4"> ' .
+            '<input id="url" placeholder="' . __( 'Website' ) . ( $req ? ' *' : '' ) . '" class="medium-input" name="url" ' . ( $html5 ? 'type="url"' : 'type="text"' ) . ' value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" maxlength="200" /></div>',
     );
-//    $defaults = array(
-//        /** This filter is documented in wp-includes/link-template.php */
-//        'must_log_in'          => '<p class="must-log-in">' . sprintf(
-//            /* translators: %s: login URL */
-//                __( 'You must be <a href="%s">logged in</a> to post a comment.' ),
-//                wp_login_url( apply_filters( 'the_permalink', get_permalink( $post_id ), $post_id ) )
-//            ) . '</p>',
-//        /** This filter is documented in wp-includes/link-template.php */
-//        'logged_in_as'         => '<p class="logged-in-as">' . sprintf(
-//            /* translators: 1: edit user link, 2: accessibility text, 3: user name, 4: logout URL */
-//                __( '<a href="%1$s" aria-label="%2$s">Logged in as %3$s</a>. <a href="%4$s">Log out?</a>' ),
-//                get_edit_user_link(),
-//                /* translators: %s: user name */
-//                esc_attr( sprintf( __( 'Logged in as %s. Edit your profile.' ), $user_identity ) ),
-//                $user_identity,
-//                wp_logout_url( apply_filters( 'the_permalink', get_permalink( $post_id ), $post_id ) )
-//            ) . '</p>',
-//        'comment_notes_before' => '<p class="comment-notes"><span id="email-notes">' . __( 'Your email address will not be published.' ) . '</span>' . ( $req ? $required_text : '' ) . '</p>',
-//        'comment_notes_after'  => '',
-//        'action'               => site_url( '/wp-comments-post.php' ),
-//        'id_form'              => 'commentform',
-//        'id_submit'            => 'submit',
-//        'name_submit'          => 'submit',
-//        'title_reply'          => __( 'Leave a Reply' ),
-//        'title_reply_to'       => __( 'Leave a Reply to %s' ),
-//        'cancel_reply_before'  => ' <small>',
-//        'cancel_reply_after'   => '</small>',
-//        'cancel_reply_link'    => __( 'Cancel reply' ),
-//        'label_submit'         => __( 'Post Comment' ),
-//        'submit_button'        => '<input name="%1$s" type="submit" id="%2$s" class="%3$s" value="%4$s" />',
-//        'submit_field'         => '<p class="form-submit">%1$s %2$s</p>',
-//        'format'               => 'xhtml',
-//    );
 
     $defaults['comment_field'] = '<div class="clear"></div><div class="col_full"><label for="comment">' . _x( 'Comment', 'noun' ) . '</label> <textarea id="comment"  name="comment" cols="58" rows="7" tabindex="4" class="sm-form-control" maxlength="65525" required="required"></textarea></div>';
 
     $defaults['fields'] = $fields;
-    $defaults['class_submit'] = 'button button-3d nomargin';
+    $defaults['class_submit'] = 'btn btn-dark-gray btn-small margin-15px-top';
     $defaults['class_form'] = 'clearfix';
-    $defaults['title_reply_before'] = '<h3 id="reply-title" class="comment-reply-title">';
-    $defaults['cancel_reply_after'] = '</h3>';
+    $defaults['title_reply_before'] = '<h3 id="reply-title" class="comment-reply-title"><span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase text-extra-dark-gray">';
+    $defaults['title_reply_after'] = '</span></h3>';
 
     return $defaults;
 }
 
-// add_filter('comment_form_defaults', 'snth_comment_form_defaults', 15);
+add_filter('comment_form_defaults', 'snth_comment_form_defaults', 15);
 
 /**
  * Reorder form fields: Textarea is last

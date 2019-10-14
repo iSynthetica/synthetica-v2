@@ -40,6 +40,7 @@ while ( have_posts() ) {
         </div>
     </div>
 </div>
+
 <div class="col-12 margin-30px-top">
     <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start width-100 border border-color-extra-light-gray padding-50px-all md-padding-30px-all sm-padding-20px-all">
         <div class="width-150px text-center sm-margin-15px-bottom sm-width-100">
@@ -129,87 +130,8 @@ if ( comments_open() || get_comments_number() ) {
     <?php
     comments_template();
 }
-?>
 
-<!-- Comments -->
-<div class="col-12 blog-details-comments">
-    <div class="width-100 mx-auto text-center margin-80px-tb md-margin-50px-tb sm-margin-30px-tb">
-        <div class="position-relative overflow-hidden width-100">
-            <span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase text-extra-dark-gray">10 Comments</span>
-        </div>
-    </div>
-    <ul class="blog-comment">
-        <li>
-            <div class="d-block d-md-flex  width-100">
-                <div class="width-110px sm-width-50px text-center sm-margin-10px-bottom">
-                    <img src="http://placehold.it/149x149" class="rounded-circle width-85 sm-width-100" alt=""/>
-                </div>
-                <div class="width-100 padding-40px-left last-paragraph-no-margin sm-no-padding-left">
-                    <a href="#" class="text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small">Herman Miller</a>
-                    <a href="#comments" class="inner-link btn-reply text-uppercase alt-font text-extra-dark-gray">Reply</a>
-                    <div class="text-small text-medium-gray text-uppercase margin-10px-bottom">17 july 2017, 6:05 pm</div>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.</p>
-                </div>
-            </div>
-            <ul class="child-comment">
-                <li>
-                    <div class="d-block d-md-flex  width-100">
-                        <div class="width-110px sm-width-50px text-center sm-margin-10px-bottom">
-                            <img src="http://placehold.it/149x149" class="rounded-circle width-85 sm-width-100" alt="" />
-                        </div>
-                        <div class="width-100 padding-40px-left last-paragraph-no-margin sm-no-padding-left">
-                            <a href="#" class="text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small">Alexander Harvard</a>
-                            <a href="#comments" class="inner-link btn-reply text-uppercase alt-font text-extra-dark-gray">Reply</a>
-                            <div class="text-small text-medium-gray text-uppercase margin-10px-bottom">17 july 2017, 6:05 pm</div>
-                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.</p>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <div class="d-block d-md-flex  width-100">
-                <div class="width-110px sm-width-50px text-center sm-margin-10px-bottom">
-                    <img src="http://placehold.it/149x149" class="rounded-circle width-85 sm-width-100" alt=""/>
-                </div>
-                <div class="width-100 padding-40px-left last-paragraph-no-margin sm-no-padding-left">
-                    <a href="#" class="text-extra-dark-gray text-uppercase alt-font font-weight-600 text-small">Jennifer Freeman</a>
-                    <a href="#comments" class="inner-link btn-reply text-uppercase alt-font text-extra-dark-gray">Reply</a>
-                    <div class="text-small text-medium-gray text-uppercase margin-10px-bottom">17 july 2017, 6:05 pm</div>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries.</p>
-                </div>
-            </div>
-        </li>
-    </ul>
-</div>
-<div class="col-12 margin-eight-top" id="comments">
-    <div class="divider-full bg-medium-light-gray"></div>
-</div>
-<div class="col-12 d-flex flex-wrap p-0">
-    <div class="col-12 mx-auto text-center margin-80px-tb md-margin-50px-tb sm-margin-30px-tb">
-        <div class="position-relative overflow-hidden width-100">
-            <span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase text-extra-dark-gray">Write A Comments</span>
-        </div>
-    </div>
-    <div class="col-12 col-lg-4">
-        <input type="text" placeholder="Name *" class="medium-input">
-    </div>
-    <div class="col-12 col-lg-4">
-        <input type="text" placeholder="E-mail *" class="medium-input">
-    </div>
-    <div class="col-12 col-lg-4">
-        <input type="url" placeholder="Website" class="medium-input">
-    </div>
-    <div class="col-12">
-        <textarea placeholder="Enter your comment here.." rows="8" class="medium-textarea"></textarea>
-    </div>
-    <div class="col-12 text-center">
-        <button class="btn btn-dark-gray btn-small margin-15px-top" type="submit">Send message</button>
-    </div>
-</div>
-<?php
 $content = ob_get_clean();
-
 ?>
 
 <?php get_header(); ?>
