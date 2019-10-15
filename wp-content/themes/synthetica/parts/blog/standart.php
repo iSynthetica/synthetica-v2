@@ -1,5 +1,6 @@
 <?php
 $categories_list = get_the_category_list( ', ' );
+$tags_list = get_the_tag_list( ' ' );
 ?>
 
 <!-- start post item -->
@@ -28,6 +29,16 @@ $categories_list = get_the_category_list( ', ' );
             <div class="entry-content last-paragraph-no-margin">
                 <?php the_excerpt(); ?>
             </div>
+
+            <?php
+            if ($tags_list) {
+                ?>
+                <div class="tag-cloud margin-20px-top">
+                    <?php echo $tags_list; ?>
+                </div>
+                <?php
+            }
+            ?>
         </div>
 
         <div class="row m-0 author border-top border-color-extra-light-gray text-center">

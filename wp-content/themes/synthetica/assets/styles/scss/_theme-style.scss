@@ -564,6 +564,7 @@ textarea.input-bg {background-color: #f7f7f7; border-radius: 4px; border: 1px so
 
 .aside-title {position: relative; overflow:hidden}
 .aside-title span {display: inline-block; vertical-align:middle; margin-right: 20px;}
+.aside-title.text-small h4 {display: inline-block; vertical-align:middle; margin-right: 20px; font-size: 12px; line-height: 20px; margin-bottom: 0; font-weight: bold;}
 .aside-title:after {content: ""; display: inline-block; width: 100%; background: #ff214f; height: 1px; top: 50%; position: absolute;}
 .right-sidebar {padding-right:45px;}
 .left-sidebar {padding-left:45px;}

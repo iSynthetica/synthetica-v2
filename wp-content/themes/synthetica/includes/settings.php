@@ -42,10 +42,10 @@ function snth_settings_sidebars($sidebars) {
             'id' => 'blog-sidebar',
             'name' => __('Blog Sidebar', 'snthwp'),
             'description' => __('Blog sidebar.', 'snthwp'),
-            'before_widget' => '<hr><div id="%1$s" class="widget %2$s">',
+            'before_widget' => '<div id="%1$s" class="widget margin-45px-bottom sm-margin-25px-bottom %2$s">',
             'after_widget' => '</div>',
-            'before_title' => '<h4 class="widgettitle">',
-            'after_title' => '</h4>',
+            'before_title' => '<div class="text-extra-dark-gray margin-20px-bottom alt-font text-uppercase text-small aside-title"><h4 class="widgettitle">',
+            'after_title' => '</h4></div>',
         )
     );
 }
