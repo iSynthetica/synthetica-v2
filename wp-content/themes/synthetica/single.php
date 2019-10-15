@@ -187,4 +187,4 @@ $content = ob_get_clean();
     </div>
 </section>
 
-<?php get_footer(); ?>
+<?php get_footer('dark'); ?>

@@ -529,34 +529,6 @@ function snth_default_image($size = 'full') {
     return $image;
 }
 
-function snth_comment_form_defaults($defaults) {
-    $req      = get_option( 'require_name_email' );
-    $commenter     = wp_get_current_commenter();
-    $html_req = ( $req ? " required='required'" : '' );
-    $html5    = false;
-
-    $fields   = array(
-        'author' => '<div class="comment-form-author col-12 col-lg-4">' .
-            '<input id="author" placeholder="' . __( 'Name' ) . ( $req ? ' *' : '' ) . '" class="medium-input" name="author" type="text" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30" maxlength="245"' . $html_req . ' /></div>',
-        'email'  => '<div class="comment-form-email col-12 col-lg-4"> ' .
-            '<input id="email" placeholder="' . __( 'Email' ) . ( $req ? ' *' : '' ) . '" class="medium-input" name="email" ' . ( $html5 ? 'type="email"' : 'type="text"' ) . ' value="' . esc_attr( $commenter['comment_author_email'] ) . '" size="30" maxlength="100" aria-describedby="email-notes"' . $html_req . ' /></div>',
-        'url'    => '<div class="comment-form-url col-12 col-lg-4"> ' .
-            '<input id="url" placeholder="' . __( 'Website' ) . ( $req ? ' *' : '' ) . '" class="medium-input" name="url" ' . ( $html5 ? 'type="url"' : 'type="text"' ) . ' value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" maxlength="200" /></div>',
-    );
-
-    $defaults['comment_field'] = '<div class="clear"></div><div class="col_full"><label for="comment">' . _x( 'Comment', 'noun' ) . '</label> <textarea id="comment"  name="comment" cols="58" rows="7" tabindex="4" class="sm-form-control" maxlength="65525" required="required"></textarea></div>';
-
-    $defaults['fields'] = $fields;
-    $defaults['class_submit'] = 'btn btn-dark-gray btn-small margin-15px-top';
-    $defaults['class_form'] = 'clearfix';
-    $defaults['title_reply_before'] = '<h3 id="reply-title" class="comment-reply-title"><span class="text-small text-outside-line-full alt-font font-weight-600 text-uppercase text-extra-dark-gray">';
-    $defaults['title_reply_after'] = '</span></h3>';
-
-    return $defaults;
-}
-
-add_filter('comment_form_defaults', 'snth_comment_form_defaults', 15);
-
 /**
  * Reorder form fields: Textarea is last
  *
@@ -566,9 +538,12 @@ add_filter('comment_form_defaults', 'snth_comment_form_defaults', 15);
 function snth_comment_form_fields($comment_fields) {
     if (!empty($comment_fields['comment'])) {
         $comment_field = $comment_fields['comment'];
+        $cookies_field = $comment_fields["cookies"];
         unset($comment_fields['comment']);
+        unset($comment_fields['cookies']);
 
         $comment_fields['comment'] = $comment_field;
+        $comment_fields['cookies'] = $cookies_field;
     }
 
     return $comment_fields;
