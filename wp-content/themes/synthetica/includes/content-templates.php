@@ -38,8 +38,8 @@ function snth_the_breadcrumbs() {
     $is_woo_active = snth_is_woocommerce_active();
     $is_yoast_seo_active = snth_is_yoast_seo_active();
 
-    $wrap_before = '<ol class="breadcrumb">';
-    $wrap_after = '</ol>';
+    $wrap_before = '<ul>';
+    $wrap_after = '</ul>';
 
     $sep_item = '<li class="separator">/</li>'; // разделитель между "крошками"
     $sep_item = ''; // разделитель между "крошками"
@@ -177,8 +177,7 @@ function snth_the_breadcrumbs() {
 
             } elseif ( get_post_type() === 'product' ) {
 
-            }
-            else {
+            } else {
                 $cat = false;
 
                 if ($is_yoast_seo_active) {

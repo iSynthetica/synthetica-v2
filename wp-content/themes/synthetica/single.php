@@ -132,26 +132,17 @@ if ( comments_open() || get_comments_number() ) {
 }
 
 $content = ob_get_clean();
+$page_title_template = 'left-alignment';
 ?>
 
 <?php get_header(); ?>
-<!-- start page title section -->
-<section class="wow fadeIn cover-background background-position-top top-space" style="background-image:url('http://placehold.it/1920x450');">
-    <div class="opacity-medium bg-extra-dark-gray"></div>
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-12 d-flex flex-column text-center justify-content-center page-title-large padding-30px-tb">
-                <!-- start sub title -->
-                <span class="d-block text-white-2 opacity6 alt-font margin-5px-bottom">We are awesome designer</span>
-                <!-- end sub title -->
-                <!-- start page title -->
-                <?php the_title( '<h1 class="alt-font text-white-2 font-weight-600 mb-0">', '</h1>' ); ?>
-                <!-- end page title -->
-            </div>
-        </div>
-    </div>
-</section>
-<!-- end page title section -->
+
+<?php
+snth_show_template('page-titles/'.$page_title_template.'.php', array(
+    'title' => get_the_title(),
+    'is_dark' => true,
+));
+?>
 
 <section>
     <div class="container">
