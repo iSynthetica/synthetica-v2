@@ -22,7 +22,7 @@
             content: "";
             width: 5px;
             height: 1px;
-            background-color: #ff214f;
+            background-color: $theme-red;
             position: absolute;
             top: 12px;
             left: 0;
@@ -45,7 +45,7 @@
             content: "";
             width: 10px;
             height: 1px;
-            background-color: #ff214f;
+            background-color: $theme-red;
             position: absolute;
             top: 11px;
             left: 0;
@@ -85,7 +85,7 @@
 }
 
 .list-style-4.list-style-color li:before {
-    color: #ff214f;
+    color: $theme-red;
 }
 
 /* list style 5 */
@@ -121,7 +121,7 @@
 }
 
 .list-style-5.list-style-color li:before {
-    color: #ff214f
+    color: $theme-red
 }
 
 /* list style 6 */

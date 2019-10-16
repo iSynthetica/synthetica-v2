@@ -25,25 +25,16 @@ if ( have_posts() ) {
     snth_pagination($pagination_args);
 }
 $content = ob_get_clean();
+$page_title_template = 'big-typography';
 ?>
 
 <?php get_header('transparent'); ?>
 
-<!-- start page title section -->
-<section class="wow fadeIn parallax" data-stellar-background-ratio="0.5" style="background-image:url('http://placehold.it/1920x1100');">
-    <div class="opacity-medium bg-extra-dark-gray"></div>
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-12 d-flex flex-column justify-content-center text-center extra-small-screen page-title-large">
-                <!-- start page title -->
-                <h1 class="text-white-2 alt-font font-weight-600 letter-spacing-minus-1 margin-10px-bottom"><?php echo $title; ?></h1>
-                <span class="text-white-2 opacity6 alt-font">Lorem Ipsum is simply dummy text printing</span>
-                <!-- end page title -->
-            </div>
-        </div>
-    </div>
-</section>
-<!-- end page title section -->
+<?php
+snth_show_template('page-titles/'.$page_title_template.'.php', array(
+    'title' => $title,
+));
+?>
 
 <section>
     <div class="container">

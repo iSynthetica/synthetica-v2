@@ -42,9 +42,9 @@
     </div>
 </footer>
 <!-- end footer -->
-<!-- start scroll to top -->
-<a class="scroll-top-arrow" href="javascript:void(0);"><i class="ti-arrow-up"></i></a>
-<!-- end scroll to top  -->
+
+<?php snth_show_template('footer/scroll-top-arrow.php'); ?>
+
 <?php wp_footer(); ?>
 </body>
 </html>
