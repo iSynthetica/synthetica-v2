@@ -305,3 +305,38 @@
         }
     }
 }
+
+.tag-cloud {
+    a {
+        font-size: 10px;
+        padding: 3px 8px;
+        border: 1px solid #d9d9d9;
+        margin: 0 8px 8px 0;
+        display: inline-block;
+        text-transform: uppercase;
+        color: #232323;
+        line-height: 18px;
+
+        &:hover {
+            background: #232323;
+            color: #fff !important;
+            border: 1px solid #232323;
+        }
+    }
+}
+
+.tagcloud {
+    a {
+        vertical-align: middle;
+        padding: 2px 5px;
+        border: 1px solid #d9d9d9;
+        margin: 0 0 4px 0;
+        display: inline-block;
+        line-height: 1.2;
+        &:hover {
+            background: #232323;
+            color: #fff !important;
+            border: 1px solid #232323;
+        }
+    }
+}
