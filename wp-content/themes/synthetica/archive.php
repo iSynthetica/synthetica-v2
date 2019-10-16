@@ -5,13 +5,7 @@
 
 $template = 'right-sidebar';
 
-if ('right-sidebar' === $template) {
-    $title = 'Blog right sidebar';
-} elseif ('left-sidebar' === $template) {
-    $title = 'Blog left sidebar';
-} elseif ('fullwidth' === $template) {
-    $title = 'Blog fullwidth';
-}
+$title = snth_the_archive_title();
 
 ob_start();
 if ( have_posts() ) {

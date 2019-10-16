@@ -13,7 +13,7 @@
 <section
     class="wow fadeIn bg-extra-dark-gray<?php echo !empty($parallax) ? ' parallax' : ''; ?>"
     <?php echo !empty($parallax) ? ' data-stellar-background-ratio="0.5"' : ''; ?>
-    style="<?php echo !empty($image) ? " background-image:url('http://placehold.it/1920x1100');" : ''; ?>"
+    style="<?php echo !empty($image) ? " background-image:url('".$image."');" : ''; ?>"
 >
     <?php
     if (!empty($parallax)) {
